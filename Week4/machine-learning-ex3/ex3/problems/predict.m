@@ -34,6 +34,7 @@ X1 = sigmoid(Theta1 * X); % hypothesis * example, this is why i transposed X
                  % so X1 has the exact same structure as X, only that is holds the data for the new features
                  % those in the current layer
                  % so we can continue the computations in the same manner, the general formula being Xi = Thetai * Xi-1
+				 % the way the new features are learned is by selecting proper weights for the initial ones!
   
 % Add a row of ones to the X1 data matrix
 X1 = [(ones(size(X1,2), 1))'; X1];  
