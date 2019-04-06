@@ -1,0 +1,50 @@
+One idea behind using gaussian distribution to detect anomalies might be the following:
+
+If an example has strange results on even one of the features, the the total probability will be very small, since all other values also range
+from 0 to 1. This makes sense because if anomalous results appear even in one of the measurements, the example might be flawed
+
+Concretely, compute the gaussian distribution for each feature, given that the examples in the data set are all non anomalous, then for a new
+example, compute the probability of being anomalous, using the distributions of the features obtained.
+
+Anomaly detection vs supervised learning, when to use which?
+
+Case for anomaly detection:
+
+Very small number of positive features & very large number of positives while also many possible "types" of anomalies, and such a supervised
+algorithm would not be able to learn all of these given the small number of positvie training
+
+Case for supervized learning:
+
+Large # of positive and negative.
+! Enough positive examples for the algorithm to learn what future positve examples might look like
+
+Anomaly detection possible uses: fraud, flawed manufacturing, machines in data center
+
+One problem with this method is that it does not detect corelations between features (*that is why we have to manually add features that capure corelations) => a solution would be to model a multivariate gaussian (downside is computationally expensive, and lots of data is required to fit well)
+
+(*) Choosing features: For anomaly detection, error analysis can be a good way of coming up with new features by observing what went wrong with
+a particular anomaly (since there are few anyway), and creating a feature that would take very large/small values in the event of this problem
+occuring again
+
+
+Recomender systems: Movie ratings
+
+Case 1) (Content based) For each movie, we know a set of features of that movie (action, romance etc..) and for each user, based on the already given ratings we would like to predict what rating would a new movie get from that user.
+This is a simple linear regression problem for each user: We want to learn the parameters theta for each feature, which represent the weights for each feature, describing how important each feature of a movie is for a particular user. For each user j, we'll have a set of weights thetaj, the total cost will be the sum over the cost for all users.
+
+So for user j: Sum (thetaj'*x(i) - y(i)), where we sum over all the movies (*) ( J(theta) )
+For all users: sum over all (*)
+
+Case 2) Here we assume that there is no knowledge about the features of each move, but instead each user gives information regarding what type of movie they like, so instead of having the feature values, we have the thatas, and we'll try to minimize the very same function, only here the parameters are the features ( J(x) )
+
+So it turns out the problem can be solve in both ways:
+Having features and learning thetas
+Having thetas and learning features
+
+Case 3) (Collaborative filtering) No knowledge of features, no knowledge of user preferences, we only know the ratings given by users to certain movies.Using the previous two cases, we can notice this can be solved in the following way:
+
+The function to be minimized is actually J(theta,x), where case 1 corresponds to x being held constant, and case to theta being constant
+We can apply gradient descent to this function and find both theta and x simultaneously.
+
+OBS: Recommending movies to a user: If a user likes a movie x, simply look for a similar one, ie y with ||x-y|| is small
+

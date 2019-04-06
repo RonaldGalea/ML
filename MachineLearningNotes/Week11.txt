@@ -1,0 +1,4 @@
+Building a complex problem:
+
+- Divide into segments with specific tasks
+- To see which segment might bring best performance enchancements, presume it is fed perfect data and check the performance boost

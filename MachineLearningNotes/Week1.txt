@@ -1,0 +1,49 @@
+Definitia cu PET:
+T- taskul ce trebuie indeplinit
+E- experienta de a indeplini taskul de mai multe ori
+P- probabilitatea ca taskul sa fie indeplinit cu succes
+
+Programul invata daca P respectiv la T este imbunatatit o data cu E
+
+Supervised and Unsupervised learning, when to use which?
+
+!Supervised learning: The data set consists of given correct values for different sets of parameters, so the task of the algorithm
+is to predict correct values for new sets of parameters
+
+They can be 2 types of problems: Regression (when we try to predict a continuous real value) and Classification (when we try to classify in what category a set of parameters belongs to, so a discrete value essentially)
+
+!Unsupervised learning: we are given data that is not labeled or structured, and the task becomes to find a structure within it
+eg: google news clustering, grouping humans based on genome information (how much certain genes are expressed)
+So the algorithm is not given what data types there are, it has to find structure on its own and then group the data by that structure
+eg2: the cocktail party problem: separating overlapping sounds (groups the sounds that are alike together, separating the rest, also
+the SVD is used here, idk how, reminder to come back and explain!!!!!!)
+
+"Unsupervised learning allows us to approach problems with little or no idea what our results should look like. We can derive structure from data where we don't necessarily know the effect of the variables.
+
+We can derive this structure by clustering the data based on relationships among the variables in the data.
+
+Example:
+
+Clustering: Take a collection of 1,000,000 different genes, and find a way to automatically group these genes into groups that are somehow similar or related by different variables, such as lifespan, location, roles, and so on.
+
+Non-clustering: The "Cocktail Party Algorithm", allows you to find structure in a chaotic environment. (i.e. identifying individual voices and music from a mesh of sounds at a cocktail party)."
+
+
+Linear regression: We can measure the accuracy of our hypothesis (prediction) function by using a cost function (for example measuring
+the squared distance from the prediction function to the data set point, thus the problem is reduced to minimize a two variable
+function: those are the parameters of the linear hypothesis we are trying to fit, this can be easily extended to fit an n degree
+polynomial)
+
+Gradient descent: a general algorithm for minimising a function
+
+A note on gradient descent, why use it at all instead of setting the gradient to 0?
+
+if n -- the number of parameters -- is large, then finding the minimum of the function involves solving a system of n equations. In the simplest case, such as in linear regression, when this is a system of n linear equations, this will in general involve inverting an nxn matrix. The standard matrix inversion algorithm is O(n^3) time. So when n is large, even linear regression can take a very long time to solve directly. And if the equations are not even linear, then the problem of finding an exact solution will be even more difficult, if not impossible.
+
+Gradient descent often allows us to bypass such bottlenecks.
+
+Concret: Din vectorul input se scade gradientul * o cosanta ( ca sa se mearga in directia opusa valorilor mari )
+
+Note: a:=b - assignment, a = b - truth assertion
+
+Cost function for linear regression is convex.

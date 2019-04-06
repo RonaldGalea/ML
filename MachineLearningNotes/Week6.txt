@@ -1,0 +1,92 @@
+!!!
+Learning curve: Plot the training error and the CV error as functions of the number of examples we've trained on so far
+Note: The training cost should be evaluated on the examples we've trained based upon so far, while the CV error should be on the
+entire CV set at each step (none of the 2 costs take the reg term, we only want the actual errors)
+
+In general: Towards the end, if the difference is big between the 2 (low training high CV) => overfit
+			   , if the difference is small but both are bad => Underfit
+
+Naturally, as we move on, training error gets larger and CV error smaller
+
+Validation curve: plot training cost and CV cost as a function of values of lambda
+Small lambda => no or not enough regularization => overfitting
+Large lamda => too much regularization => underfitting
+
+So as lambda is increasing, CV errors is decreasing, up to a certain point, then it increases again, so we get a convex looking shape based
+on which we can choose lambda
+
+
+
+
+
+Possible problems in learning algorithms and how to fix them:
+
+Large error:
+- some of possible solutions:
+
+Getting more training examples
+Trying smaller sets of features
+Trying additional features
+Trying polynomial features
+Increasing or decreasing lambda
+
+But there are ways to see which could work better than the others. When an algorithm behaves badly,
+it's most likely underfitting or overfitting, both cases having their specific fixes among those
+listed above.
+
+Evaluating a model: to quickly see the effectiveness of an algorithm, the data set can be split in 2 parts, a training set 
+and a test set: If the algorithm does well of the training set but not the test set, then it has most likely over fit and
+we have immediately identified a problem.
+
+Polynomial model fitting: Suppose you were to chose a polynomial linear regression model for the task. One possible approach is 
+training each degree model from 1-10, and then pick the best degree by observing which performed best on the test set. However, there is a catch here: this is like choosing another parameter, the degree, BASED on the test set, that is similar to testing
+a model on the same same data it has trained, so we would be likely to be biased towards the test set and the chosen degree.
+
+To fix this problem: We separate the data in 3 parts: training set, validation set and test set. We train using training set to
+train all our 10 models, we use the validation to pick the degree, and then we estimate the generalization error using the test set.
+
+Diagnosing bias(underfitting) vs variance(overfitting):
+If we were to plot the validation cost and the train cost as a function of the degree of the polynomial we are trying to choose
+we would get the following results:
+
+The training error will tend to decrease as we increase the degree d of the polynomial.
+
+At the same time, the cross validation error will tend to decrease as we increase d up to a point, and then it will increase as d is increased, forming a convex curve. => the base of the curve will be the optimal choice for d (similar with the validation curves (actually the reverse), increasing the degree of the polynomial has the same effect as decreasing lambda => increasing chances of overfitting)
+
+Choosing the right lambda for regularization:
+Create a list of values for lambda
+Train the theta models for each lambda and compute the cross validation error (this should be considered without the regularization term, since we are interested in the actual errors, no need for the squared sum of thetas)
+Select the best pair of model and lambda and compute the test error to see if it generalizes well
+
+As a summary: 
+
+Getting more training examples: Fixes high variance
+Trying smaller sets of features: Fixes high variance
+Adding features: Fixes high bias
+Adding polynomial features: Fixes high bias
+Decreasing lambda: Fixes high bias
+Increasing lambda: Fixes high variance.
+
+
+As for NN, chosing the # of hidden layers is similar:
+
+More layers => more parameters more prone to overfitting
+
+It is possible to test out multiple with the CV and test sets (first train, then chose # with CV, then see how it generalizes with the test)
+
+
+Evaluation metrics:
+
+Precision = (#positivePredicted positives) / (#positivePredicted positives + positivePredicted negatives) % out of those we predicted positive, how many were actually positive
+Recall = (#positivePredicted positives) / (#actual positives = positivePredicted positives + negativePredicted positives) % how many of the positives we predicted positive
+
+These metrics don't allow algortihms to cheat on skewed data sets, ex on a data set with 99% negative examples, an algorithm that
+always predicts 0 will have 0 recall and precision
+
+A single value that combines the two can be obtained with the harmonic mean
+
+OBS: For this to work we need y = 1 on the much rarer case
+
+
+
+ 

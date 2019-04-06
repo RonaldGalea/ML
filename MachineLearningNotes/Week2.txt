@@ -1,0 +1,31 @@
+Mutivariate linear regression
+
+h(x) = (theta)' * x, where theta is the coef vector and x is the input vector, both in R^n
+
+Essentially, the theta vector assigns a "weight" to each feature, saying how important it is regarding the desired result.
+
+Also, the cost function becomes J:R^n -> R, J(theta) which should be minimized
+
+Feature scaling: scale all features so they all have a certain range of variance => this helps gradient descent run much faster
+Techniques: Mean normalization: x = (x - Avg(x))/(Max(x)-Min(x)), instead of max - min => standard dev
+
+Debugging ideas: plotting the cost function against the number of iterations and observe it's progress, ideally it should decrease 
+and even become flat after a certain number of iterations => grad desc has converged
+If J increases as iterations go on => usually the learning rate alpha is too high and grad desc keeps overshooting the minimum
+
+Polynomial regression: Fit a curve to the dataset instead of a line (the hypothesis becomes a higher degree polynomial)
+
+( Notation: x superscript i = ith training example ( a line from the design matrix ), but as a convention single vectors are always 
+treated as columns, so it gets transposed; x underscript j = all data of jth feature )
+
+Gradient desc vs Normal equation:
+Grad desc: needs a choice for alpha (often this means running it a few times for tests), but is scales well for large n
+Normal eq: involves matrix operation (mult and inv), so it does not scale well for large n
+But n is the number of features, so for n = 100 - 1000 features, the normal equation probably works better than grad desc
+
+Obs on normal eq: if X'*X in non invertible => linear dependent features (they should just be removed), m<=n (almost never should happen anyway); Anyhow, just using the pseudo-inverse works fine (since the linear dependent features can be obtained from the basis,
+so taking the highest order minor in X'*X is enough)
+
+Vectorization: Simpler and more efficient!
+
+Octave syntax note: A(i:j, k:l) takes rows through i to j, intersected with cols to k to l

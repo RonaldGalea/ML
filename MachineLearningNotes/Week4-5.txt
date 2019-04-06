@@ -1,0 +1,69 @@
+Realistically, linear and logistic regressions are only feasible for problems with relatively low number of features or which do not need complex hypotheses (since # of polynomial features grows too much if we were to manually add terms).
+
+
+Neural networks:
+
+To pass from layer j to j+1, we have a matrix of size: #elem(j+1) x #elem(j)+1; This happens because each element in layer j+1 basically
+has it's own prediction parameters, and when multiplying this matrix with the previous layer (!which is the input layer for the current one)
+we get line i x INPUTcol: where line i consists of the prediction params for the ith element in layer j+1, which has to multiply with the 
+previous (input) layer, giving the predicted values for layer j+1. (#elem(j)+1 cuz we add the constant bias unit)
+
+!!!IDEA: the neural net LEARNS it's own better features (instead of having to manually add all higher order features, since we dont know which are better then the others, we let the algorithm LEARN which are the best, and only keep those!!!!)
+
+ex: for recognizing images: Advanced layers maybe aim to recognize parts of images, that put on top of each other give the 
+actual image (see 3b1b backprop video)
+
+Great examples that show this inutively: Consider the logical functions AND, OR, NOT AND NOT, all of these can be solved with linear
+decision boundaries, ie simple logistic regression (refer to Examples and Intuitions from week 4, or just draw the plots yourself).
+However, XNOR cannot be fit by a linear boundary, but can be obtained as a net combined of the above functions, which uses combined features to get to the results.
+
+
+Neural networks: Forward and Backpropagation, intuition and implementation
+
+At each state, the neural network has a set of paramethers THETA, all weights and biases between all nodes, initially set randomly
+
+Given an example data, the output will be random.
+
+We define the cost of a single example data to be the difference between the output and the actual value.
+
+Now, we are interested in minimizing the cost, as quickly as possible, that is moving in the opposite direction of the cost function gradient.
+
+The cost function is a function of all weights and biases between the nodes, that means we need the partial derivatives with respect to all of those, so the gradient is a little tricky to compute.
+
+The partials with respect to weights in the penultimate layer are easy to compute: Moving a weight, say from the first node to the first output
+node, will have the following effect: It affects the z1, then the a1, then the cost; with z1 being a function of all the weights from the node to the output, with a being a function of z1 (sigmoid), and the cost being a function of all outputs, so it would be a simple chain rule:
+
+PC/PW = PZ1/PW * Pa1/Pz1 * PC/Pa1, where P stands for partial
+
+For the remaining weights things get trickier, since being a layer back means moving a weight means first influencing a node from the next layer
+which in turn then influences the output. That means we need to know the partial of the cost with respect to all nodes in the next layer. The chain rule would be roughly like this: Move a weight in layer L-2, influence a node in layer L-1, the modification in this node influences
+all nodes in layer L, and thus for the partial with respect to this weight, we need to add all those up, and know the partial with respect
+to the moved node in layer L-1, and all the partials with respect to all the nodes in layer L
+
+In short, this means a painfully long, but still just a chain rule.
+
+Here is exactly where the idea of backpropagation comes in. To know the partial of a weight in layer L-2, you need to know the partials of the
+nodes in layers L-1, L ... And that information is propagated backwards to be used for the computation of that partial
+
+Having computed all the partials, we have obtained the part of the gradient contributed by this single training example,
+summing over all of them and taking the average gives the final gradient (cuz the cost function is defined as taking the average
+of all costs of each training example, each example contributes with a slight nudge of the parameters that would fit itself better)
+
+Having final the gradient, the next step is like any other gradient descent
+
+Note: How exactly is the cost function defined? As the sum of the errors on all examples, right? Then at a certain step, the cost function
+has certain parameters, with those it gives a cost averaged over all of the training data. We take the gradient, perform a gradient descend
+step, and repeat: calculate the new cost using the new parameters we've obtained
+
+
+
+
+
+
+
+
+
+
+
+
+

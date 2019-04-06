@@ -1,0 +1,49 @@
+SVMs
+
+For the logistic regression algrithm, when y = 1 our hypothesis should ideally be h(x) ~ 1, and that happens when theta' * x >> 0 
+(similarily for y = 0 we should have theta' * x << 0)
+
+To get started with SVMs, we will begin by tweaking the logistic regression a bit, in the following way:
+Instead of minimizing Sum( ylog(h(x)) + (1-y)log(1-h(x)) ), we will minimize Sum( y*cost1(theta' * x) + (1-y)*cost0(theta' * x) )
+where cost1 simply denotes the cost when the example is positive
+
+Then the cost is defined as follows:
+if y = 1 and theta' * x >=1, the cost is 0
+if y = 0 and theta' * x <=-1, the cost is 0
+else, the cost linearly increases
+
+Notice that this kind of cost function, if plotted next to the usual cost function of the logistic regression is very similar. Let's take the y=1 case and make a comparison. We can see that we basically obtain a linearization, since for logistic regression we have a curve -> 0 as
+theta' * x increases (already close to 0 when it is 1), and increases towards infinity if theta' * x goes towards -inf. If we chose a right
+slope for the linear increase, we can get very similar plots, just that one is a curve and the other is formed of straight lines (a flat
+straight line denoting cost 0 if theta' * x >=1, and a negative sloped line, increasing as theta' * x decreases)
+
+One other small difference is the way of controlling regularization regularization. If for logistic regression we had a lambda directly multiplying the sum of squared thetas (thus directly penalizing large values of theta), here we will have a different constant, C, multiplying the sum, indirectly controlling the regularization term, in the sense that if C is large, then we seriously penalize misclassification, having
+less regard for the squared sum, and is C is small, the squared sum will matter more (thus C is playing the role of 1/lambda)
+
+SVMs are also called large margin classifiers, and this is because they tend to chose a decision boundary that has a big minimum distance to the examples. This can be seen by making the following observations: theta' * x = P * ||theta||, where P is the length of the projection of
+x onto theta. Ideally, we would like the norm of theta to be small, so the projections should be larger if we want to obtain theta' * x >=1 (or <= -1, this is because p can be negative if the vectors face opposite directions, still we need p to have large abs value). Now, we know the gradient of a function is perpendicular to the countour of the function, pointing towards higher values, and this gradient is none other
+than theta, so for the projections to be larger, theta should on average have the same direction as the examples, and should be further away,
+and this corresponds to chosing a decision boundary with high margin (very roughly speaking)
+
+So far, this has been all about a linear decision boundary, and in this case SVM is really probably going to fair the same as a logistic
+regression (being very similar). But for the case of more complex, non linear decision boundaries, the SVM may fair better
+
+To do this with logistic regression, we would have to chose higher order polynomial terms, however, in the context of SVMs, it seems there is 
+a better option: We can compute a new set of features f1, f2, ... in the following way (the data set needs to be relatively small though, say m<10000, else it becomes computationally expensive):
+
+- In the feature space, fix a set of landmarks l1, l2, ... and for our example x, compute how similar, or how "close" it is to each of those
+landmarks. The idea is to see how "close" each example is to being a positive example, and each of these new features f1, f2, ... will measure
+exactly this: the similarity between x and the landmark l1, l2, ... . Afterwards, the parameters theta will assign weights to each of these
+features, ie "How important is it to be close to this landmark, if we ask whether the example is positive?"
+
+Concretely, the similarity is computed using a function, called Kernel, for example the gaussian similarity: exp(-||x-l|| / 2sigma^2)
+Obs: High sigma -> lower variance (higher value of the function, so it drops less abruptly from the landmark where in is 1)
+
+Choosing the landmarks: given m training examples, choose the landmarks exactly the examples => we'll have m landmarks and each example
+x will have it's m feature values f1 = sim(x,l1), f2 = sim(x,l2) ... with each feature itself being the actual similarity with the a landmark.
+
+So our cost function becomes C * Sum( Y*cost1(theta' * f) + (1-y)*cost0(theta' * f) ); where theta is now an m dimensional parameter vector,
+since each feautre requires a weight, and we have m features (similiarities to a landmark)
+
+Here, we will simply predict y=1 if theta' * f >= 0
+

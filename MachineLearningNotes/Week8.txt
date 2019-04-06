@@ -1,0 +1,59 @@
+Unsupervised learning:
+
+Data comes with no labels => Goal is to find structure in the given data.
+
+Clustering: Grouping given data into clusters of similar examples
+
+K-means algorithm: an intuitive way of grouping unlabeled data (for simplicity, # centroids = 2)
+- Pick 2 points initially at random, these points are called cluster centroids
+- compute for each training example which centroid is the closest to it, and assign the example to that centroid
+- move the 2 centroids at the location given by computing the mean location of all examples assigned to them
+- this has the effect of "dragging" the centroids towards a the most points it has assigned
+- repeat until the clusters no longer move, ie the algorithm converged
+
+Rigorously, the algorithm is minimizing the following cost function:
+J = Sum( || x - Ux || ), where x is an example and Ux is the centroid it is assigned to
+
+
+One issue that may appear is being stuck in a local minima, generally, this is addressed by using multiple random initializations
+This tends to work well when the number of clusters is smaller, tipically < 10, whereas if we have hundreds of clusters it may not help that 
+much.
+
+Choosing the right value of clusters:
+
+The elbow method - nice but unreliable: plotting the cost as a function of the # of clusters, and picking the the value after it starts stop
+decreasing much
+
+It is generally chosen manually, depending on the particular problem that's being solved
+
+
+
+Data compression - PCA algorithm
+
+PCA is a neat algorithm based on linear algebra results, which is described nicely in detail in PCA.pdf
+
+In short, for n-dimensional examples, we would like to find, for a k<n, the best linear hiperplane onto which we can project our data in order
+to save space and have our learning algorithms run faster.
+
+Concretely, what the algorithm does is the following: 
+-From all the data, construct the covariance matrix A ( nxn )
+-A turns out to be symetric semi positive definite, so it is orthogonally diagonalizable
+-Compute its eigenvalues and eigenvectors
+-On the main diagonal of A lie the variances of each variables, so the sum of the eigenvalues account for the total variance
+-Out of these, pick the k largest - these will account for nearly all the variance
+-Take the k eigenvectors corresponding to these eigenvalues
+-The hiperplane spanned by these eigenvectors is the needed projection plane
+
+Let x be an R^n example, U - the matrix formed by the eigenvectors, notice U is orthogonal by the properties of A
+Take Ur - U reduced to the first k eigenvectors as we've defined
+
+Then the compressed version of x is simply z = Ur' * x, and to convert back (with the unavoidable loss) xl = Ur * z, since Ur is also orthogonal. (*)
+
+Note: The derivation of these formulas is as follows:
+x seen in the diagonal base is z, which are linked by the relation Uz = x, that is the to see z in the canonical base, z must be multiplied
+by the change of basis matrix. To get to (*) just take k of the eigenvectors in U. 
+
+Choosing k: Depends on how much variance is needed to be retained vs how much compression is needed
+The retained variance, considering the properties above, can be easily computed as the sum of the k chosen eigenvalues over the total sum
+
+Uses: speed up learning algorithms, visualize high dimensional data, data compression

@@ -1,0 +1,15 @@
+When working with very large datasets, it turns out that the gradient descent we've been using so far (taking a step by looking at ALL the data
+in the training set) is not the most efficient method, this type of gradient descent is also called batch gradient descent.
+
+As alternatives, we have:
+1) Stochastic gradient descent: here, the descent step is made by looking at just ONE example. Doing it this way determines the descent steps
+to be less accurate, and a wobbling trajectory may occur instead of a direct route, but it is much cheaper computationally.
+Note: unless the learning rate alpha is decreased as we approach the minimum, stochastic gradient descent will never fully converge, it will keep going around the minimum forever within a distance determined by alpha as it tries to fit a particular example at once.
+
+2) Mini batch gradient descent: Same as stochastic, except it looks at a number b, typically, 1<b<100, when taking a gradient descent step. The advantage comes with the fact that a vectorized implementation of computing the cost of b elements may be just as quick as computing a single one.
+
+Debugging: Choose a number of elements, say 1000. Before taking the step with regard to an example, compute its cost => every 1000 steps look
+back at the cost averaged over the last 1000 elements, and check whether its going down.
+
+Map reduce: Split the training set into k subsets, and let the cost on each subset be computed by a separate machine, the final cost being
+the sum over the cost on the k sets. 
